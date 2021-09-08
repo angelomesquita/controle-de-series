@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('unis', function() {
+    $this->comment('Somos do grupo Unis');
+})->purpose('Exemplo da aula');
+
+Artisan::command('bloquear {user}', function ($user) {
+    /** criar a regra para bloquear o usuário */
+    $this->comment("usuário {$user} foi bloqueado com sucesso!");
+});
