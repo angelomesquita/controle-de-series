@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SeriesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/series', [SeriesController::class, 'listar']); 
+Route::post('/series', [SeriesController::class, 'criar']); 
+Route::put('/series', [SeriesController::class, 'atualizar']); 
+Route::delete('/series', [SeriesController::class, 'deletar']); 
