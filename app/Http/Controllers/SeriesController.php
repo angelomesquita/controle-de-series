@@ -6,36 +6,79 @@ use Illuminate\Http\Request;
 
 class SeriesController extends Controller
 {
-    public function listar()
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        $series = [
-            'The Flash', 
-            'Vikings', 
-            'La Casa de Papel',
-            'Agents of Shields',
-            'What if...',
-            'The 100',
-            'Loki'
-        ];
-
-        return response(
-            json_encode($series), 
-            200
-        );
+        return 'listar todas as séries';
     }
 
-    public function criar()
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-
+        // chamar o formulário de cadastro de séries
     }
 
-    public function atualizar()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-
+        // receber os dados do formulário de cadastro de séries
     }
 
-    public function deletar()
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        
+        // buscar uma séries específica
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        // chamar o formulário de edição de séries
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        // receber os dados do formulário de edição de séries
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        // deletar uma serie específica
     }
 }
