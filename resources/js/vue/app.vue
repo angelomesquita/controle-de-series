@@ -1,17 +1,19 @@
 <template>
-    <div class="seriesContainer">
+    <div class="series-container">
         <div class="heading">
             <h2 id="title">Séries</h2>
             <!-- @todo botão do formulário -->
         </div>
-        <!-- @todo componente para listagem das séries -->
+        <list-view :series="series"/>
     </div>
 </template>
 
 <script>
+import listView from './listView'
+
 export default {
     components: {
-        // indicar os componentes que estão sendo usados
+        listView
     },
     data: function() {
         return {
@@ -37,7 +39,7 @@ export default {
 </script>
 
 <style scoped>
-    .seriesContainer {
+    .series-container {
         width: 50%;
         margin: auto;
     }
