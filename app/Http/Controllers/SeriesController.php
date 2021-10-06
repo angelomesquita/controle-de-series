@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Serie;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SeriesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista todas as series cadastradas no SGBD
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
         return response(Serie::all(), 200);
     }
