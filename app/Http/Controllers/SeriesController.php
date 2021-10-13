@@ -21,7 +21,7 @@ class SeriesController extends Controller
     /**
      * Cria um novo registro de série no SGBD
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request): Response
@@ -32,9 +32,9 @@ class SeriesController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Exibe os dados de uma série específica
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id): Response
@@ -49,26 +49,57 @@ class SeriesController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Atualiza uma série específica
      *
-     * @param  int  $id
+     * @param \Illuminate\Http\Request  $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function update(Request $request, $id): Response
     {
-        // chamar o formulário de edição de séries
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+        if ($id === false) {
+            return response('Not found', 404);
+        }
+        $request->validate([
+            'nome' => 'min:5|string',
+            'status' => 'in:assistido,não-assistido'
+        ]);
+
+        $serie = Serie::find($id);
+        if (isset($request['nome'])) {
+            $serie->nome = $request['nome'];
+        }
+        if (isset($request['status'])) {
+            $serie->status = $request['status'];
+        }
+        $serie->save();
+
+        return response('No Content', 204);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza o status da série no SGBD
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function status($id): Response
     {
-        // receber os dados do formulário de edição de séries
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+        if ($id === false) {
+            return response('Not Found', 404);
+        }
+
+        $serie = Serie::find($id);
+        if ($serie->status === 'não-assistido') {
+            $serie->status = 'assistido';
+        } else {
+            $serie->status = 'não-assistido';
+        }
+        $serie->save();
+
+        return response('No Content', 204);
     }
 
     /**
