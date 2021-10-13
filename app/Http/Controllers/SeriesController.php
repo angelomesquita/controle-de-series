@@ -19,7 +19,7 @@ class SeriesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Cria um novo registro de série no SGBD
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -37,9 +37,15 @@ class SeriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): Response
     {
-        // buscar uma séries específica
+       $id = filter_var($id, FILTER_VALIDATE_INT);
+       if ($id === false) {
+           return response("Not found", 404);
+       }
+
+       $serie = Serie::findOrFail($id);
+       return response($serie, 200);
     }
 
     /**
