@@ -1,19 +1,19 @@
 <template>
     <div class="series-container">
         <div class="heading">
-            <h2 id="title">Séries</h2>
+            <h1 id="title">Séries</h1>
             <!-- @todo botão do formulário -->
         </div>
-        <list-view :series="series"/>
+        <table-series :series="series"/>
     </div>
 </template>
 
-<script>
-import listView from './listView'
+<script>tableSeries
+import tableSeries from './tableSeries.vue'
 
 export default {
     components: {
-        listView
+        tableSeries
     },
     data: function() {
         return {
@@ -40,13 +40,14 @@ export default {
 
 <style scoped>
     .series-container {
-        width: 50%;
-        margin: auto;
+        margin: 10px auto;
+        width: 60%;
     }
 
     .heading {
         background: #e6e6e6;
-        padding: 10px;
+        border-radius: 10px;
+        padding: 20px;
     }
 
     #title {
