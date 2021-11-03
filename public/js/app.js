@@ -2154,11 +2154,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       serie: {
-        titulo: ""
+        titulo: "",
+        categoria: "",
+        streaming: ""
       }
     };
   },
@@ -2166,21 +2190,32 @@ __webpack_require__.r(__webpack_exports__);
     cadastrarSerie: function cadastrarSerie() {
       var _this = this;
 
-      if (this.serie.titulo == '') {
+      if (this.existeCampoVazio() === true) {
         return;
       }
 
       axios.post('api/v1/serie', {
-        nome: this.serie.titulo
+        nome: this.serie.titulo,
+        categoria: this.serie.categoria,
+        streaming: this.serie.streaming
       }).then(function (response) {
         if (response.status == '201') {
           _this.serie.titulo = '';
+          _this.serie.categoria = '';
+          _this.serie.streaming = '';
 
           _this.$emit('reloadlist');
         }
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    existeCampoVazio: function existeCampoVazio() {
+      if (this.serie.titulo == '' || this.serie.categoria == '' || this.serie.streaming == '') {
+        return true;
+      }
+
+      return false;
     }
   }
 });
@@ -2198,6 +2233,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
 //
 //
 //
@@ -20529,6 +20568,102 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
+    _vm._m(1),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-auto" }, [
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.serie.categoria,
+              expression: "serie.categoria"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { id: "categoria" },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.serie,
+                "categoria",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { disabled: "", value: "" } }, [
+            _vm._v("Escolha uma categoria")
+          ]),
+          _vm._v(" "),
+          _c("option", [_vm._v("Ação")]),
+          _vm._v(" "),
+          _c("option", [_vm._v("Ficção")]),
+          _vm._v(" "),
+          _c("option", [_vm._v("Terror")])
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _vm._m(2),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-auto" }, [
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.serie.streaming,
+              expression: "serie.streaming"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { id: "streaming" },
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.serie,
+                "streaming",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { disabled: "", value: "" } }, [
+            _vm._v("Escolha um streaming")
+          ]),
+          _vm._v(" "),
+          _c("option", [_vm._v("Amazon Prime")]),
+          _vm._v(" "),
+          _c("option", [_vm._v("HBO Max")]),
+          _vm._v(" "),
+          _c("option", [_vm._v("Netflix")])
+        ]
+      )
+    ]),
+    _vm._v(" "),
     _c("div", { staticClass: "col-auto" }, [
       _c(
         "button",
@@ -20553,6 +20688,26 @@ var staticRenderFns = [
     return _c("div", { staticClass: "col-auto" }, [
       _c("label", { staticClass: "form-label", attrs: { for: "titulo" } }, [
         _vm._v("Título: ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-auto" }, [
+      _c("label", { staticClass: "form-label", attrs: { for: "categoria" } }, [
+        _vm._v("Categoria: ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-auto" }, [
+      _c("label", { staticClass: "form-label", attrs: { for: "streaming" } }, [
+        _vm._v("Streaming: ")
       ])
     ])
   }
@@ -20591,6 +20746,10 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(serie.nome))]),
             _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(serie.categoria))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(serie.streaming))]),
+            _vm._v(" "),
             _c("td", [_vm._v(_vm._s(serie.status))])
           ])
         }),
@@ -20609,6 +20768,10 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("ID")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Título da Série")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Categoria")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Streaming")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Status")])
       ])
