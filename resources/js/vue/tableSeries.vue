@@ -15,7 +15,7 @@
                     <th scope="row">{{ serie.id }}</th>
                     <td>{{ serie.nome }}</td>
                     <td>{{ serie.categoria }}</td>
-                    <td>{{ serie.streaming}}</td>
+                    <td>{{ serie.streaming }}</td>
                     <td>{{ serie.status }}</td>
                 </tr>
             </tbody>
