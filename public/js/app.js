@@ -2089,6 +2089,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 _tableSeries_vue__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 
@@ -2099,7 +2102,8 @@ _tableSeries_vue__WEBPACK_IMPORTED_MODULE_0__["default"];
   },
   data: function data() {
     return {
-      series: []
+      series: [],
+      serie: []
     };
   },
   methods: {
@@ -2108,7 +2112,15 @@ _tableSeries_vue__WEBPACK_IMPORTED_MODULE_0__["default"];
 
       axios.get('api/v1/series').then(function (response) {
         _this.series = response.data;
-        console.log(_this.series);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    editar: function editar(id) {
+      var _this2 = this;
+
+      axios.get('api/v1/serie/' + id).then(function (response) {
+        _this2.serie = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2177,15 +2189,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      serie: {
-        titulo: "",
-        categoria: "",
-        streaming: ""
-      }
-    };
-  },
+  props: ['serie'],
   methods: {
     cadastrarSerie: function cadastrarSerie() {
       var _this = this;
@@ -2195,12 +2199,12 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       axios.post('api/v1/serie', {
-        nome: this.serie.titulo,
+        nome: this.serie.nome,
         categoria: this.serie.categoria,
         streaming: this.serie.streaming
       }).then(function (response) {
         if (response.status == '201') {
-          _this.serie.titulo = '';
+          _this.serie.nome = '';
           _this.serie.categoria = '';
           _this.serie.streaming = '';
 
@@ -2211,7 +2215,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     existeCampoVazio: function existeCampoVazio() {
-      if (this.serie.titulo == '' || this.serie.categoria == '' || this.serie.streaming == '') {
+      if (this.serie.nome == '' || this.serie.categoria == '' || this.serie.streaming == '') {
         return true;
       }
 
@@ -2258,8 +2262,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['series']
+  props: ['series'],
+  methods: {
+    editar: function editar(id) {
+      this.$emit('editarserie', id);
+    }
+  }
 });
 
 /***/ }),
@@ -20474,6 +20489,7 @@ var render = function() {
             _c("h2", [_vm._v("Séries")]),
             _vm._v(" "),
             _c("form-series", {
+              attrs: { serie: _vm.serie },
               on: {
                 reloadlist: function($event) {
                   return _vm.getSeries()
@@ -20491,8 +20507,8 @@ var render = function() {
             _c("table-series", {
               attrs: { series: _vm.series },
               on: {
-                reloadlist: function($event) {
-                  return _vm.getSeries()
+                editarserie: function($event) {
+                  return _vm.editar($event)
                 }
               }
             })
@@ -20546,23 +20562,23 @@ var render = function() {
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.serie.titulo,
-            expression: "serie.titulo"
+            value: _vm.serie.nome,
+            expression: "serie.nome"
           }
         ],
         staticClass: "form-control",
         attrs: {
-          id: "titulo",
+          id: "nome",
           placeholder: "Digite o título da série",
           required: ""
         },
-        domProps: { value: _vm.serie.titulo },
+        domProps: { value: _vm.serie.nome },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.$set(_vm.serie, "titulo", $event.target.value)
+            _vm.$set(_vm.serie, "nome", $event.target.value)
           }
         }
       })
@@ -20686,7 +20702,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-auto" }, [
-      _c("label", { staticClass: "form-label", attrs: { for: "titulo" } }, [
+      _c("label", { staticClass: "form-label", attrs: { for: "nome" } }, [
         _vm._v("Título: ")
       ])
     ])
@@ -20750,7 +20766,22 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(serie.streaming))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(serie.status))])
+            _c("td", [_vm._v(_vm._s(serie.status))]),
+            _vm._v(" "),
+            _c("td", [
+              _c("i", {
+                staticClass: "bi bi-pencil-square",
+                on: {
+                  click: function($event) {
+                    return _vm.editar(serie.id)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("i", { staticClass: "bi bi-trash" }),
+              _vm._v(" "),
+              _c("i", { staticClass: "bi bi-check" })
+            ])
           ])
         }),
         0
@@ -20773,7 +20804,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Streaming")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Status")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Ações")])
       ])
     ])
   }
@@ -32948,7 +32981,7 @@ Vue.compile = compileToFunctions;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","/home/angelo/Projects-aulas/controle-de-series"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"/home/angelo/Projects-aulas/controle-de-series","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ })
 
