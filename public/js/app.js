@@ -2204,11 +2204,37 @@ __webpack_require__.r(__webpack_exports__);
         streaming: this.serie.streaming
       }).then(function (response) {
         if (response.status == '201') {
+          _this.serie.id = null;
           _this.serie.nome = '';
           _this.serie.categoria = '';
           _this.serie.streaming = '';
 
           _this.$emit('reloadlist');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    editarSerie: function editarSerie() {
+      var _this2 = this;
+
+      if (this.existeCampoVazio() === true) {
+        return;
+      }
+
+      axios.patch('api/v1/serie/' + this.serie.id, {
+        nome: this.serie.nome,
+        categoria: this.serie.categoria,
+        streaming: this.serie.streaming,
+        status: this.serie.status
+      }).then(function (response) {
+        if (response.status == '204') {
+          _this2.serie.id = null;
+          _this2.serie.nome = '';
+          _this2.serie.categoria = '';
+          _this2.serie.streaming = '';
+
+          _this2.$emit('reloadlist');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -20687,11 +20713,17 @@ var render = function() {
           staticClass: "btn btn-primary",
           on: {
             click: function($event) {
-              return _vm.cadastrarSerie()
+              _vm.serie.id ? _vm.editarSerie() : _vm.cadastrarSerie()
             }
           }
         },
-        [_vm._v("\n            Cadastrar\n        ")]
+        [
+          _vm._v(
+            "\n            " +
+              _vm._s(_vm.serie.id ? "Editar" : "Cadastrar") +
+              "\n        "
+          )
+        ]
       )
     ])
   ])

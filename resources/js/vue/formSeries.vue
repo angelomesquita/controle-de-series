@@ -35,8 +35,8 @@
             </select>
         </div>
         <div class="col-auto">
-            <button class="btn btn-primary" @click="cadastrarSerie()">
-                Cadastrar
+            <button class="btn btn-primary" @click="serie.id ? editarSerie() : cadastrarSerie() ">
+                {{ serie.id ? 'Editar': 'Cadastrar' }}
             </button>
         </div>
     </div>
@@ -56,6 +56,29 @@ export default {
                 streaming: this.serie.streaming
             }).then( response => {
                     if (response.status == '201') {
+                        this.serie.id = null;
+                        this.serie.nome = '';
+                        this.serie.categoria = '';
+                        this.serie.streaming = '';
+                        this.$emit('reloadlist');
+                    }
+                }) 
+                .catch( error => {
+                    console.log(error);
+                })
+        },
+        editarSerie() {
+            if (this.existeCampoVazio() === true) {
+                return;
+            }
+            axios.patch('api/v1/serie/' + this.serie.id, {
+                nome: this.serie.nome,
+                categoria: this.serie.categoria,
+                streaming: this.serie.streaming,
+                status: this.serie.status,
+            }).then( response => {
+                    if (response.status == '204') {
+                        this.serie.id = null;
                         this.serie.nome = '';
                         this.serie.categoria = '';
                         this.serie.streaming = '';
@@ -75,7 +98,7 @@ export default {
             }
             return false;
         }
-    },
+    }
 }
 </script>
 
