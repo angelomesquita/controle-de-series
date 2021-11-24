@@ -16,6 +16,8 @@
                     <table-series 
                         :series="series" 
                         v-on:editarserie="editar($event)"
+                        v-on:apagarserie="apagar($event)"
+                        v-on:alternarstatus="alternarStatus($event)"
                     />
                 </div>
             </div>    
@@ -57,6 +59,24 @@ export default {
                     console.log(error);
                 })
         },
+        apagar(id) {
+            axios.delete('api/v1/serie/' + id)
+                .then( response => {
+                    this.getSeries();
+                }) 
+                .catch( error => {
+                    console.log(error);
+                })
+        },
+        alternarStatus(id) {
+            axios.put('api/v1/serie/' + id + '/status')
+                .then( response => {
+                    this.getSeries();
+                }) 
+                .catch( error => {
+                    console.log(error);
+                })
+        }
     },
     created() {
         this.getSeries();

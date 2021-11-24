@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSerieRequest;
-use App\Http\Requests\UpdateSerieRequest;
+use App\Http\Requests\Serie\StoreSerieRequest;
+use App\Http\Requests\Serie\UpdateSerieRequest;
 use App\Models\Serie;
 use Illuminate\Http\Response;
 
@@ -11,7 +11,7 @@ class SeriesController extends Controller
 {
     public function index(): Response
     {
-        return response(Serie::all(), Response::HTTP_OK);
+        return response(Serie::with('temporadas')->get(), Response::HTTP_OK);
     }
 
     public function store(StoreSerieRequest $request): Response
@@ -29,25 +29,16 @@ class SeriesController extends Controller
     public function update(UpdateSerieRequest $request, int $id): Response
     {
         $serie = Serie::find($id);
-        $serie->nome = $request['nome'];
-        $serie->status = $request['status'];
-        $serie->categoria = $request['categoria'];
-        $serie->streaming = $request['streaming'];
+        $serie->fill($request->all());
         $serie->update();
-
         return response('No Content', Response::HTTP_NO_CONTENT);
     }
 
     public function status(int $id): Response
     {
         $serie = Serie::find($id);
-        if ($serie->status === 'não-assistido') {
-            $serie->status = 'assistido';
-        } else {
-            $serie->status = 'não-assistido';
-        }
+        $serie->alternarStatus();
         $serie->save();
-
         return response('No Content', Response::HTTP_NO_CONTENT);
     }
 
